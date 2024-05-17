@@ -21,6 +21,7 @@ async def check_task_number(user_id):
         user_tasks = await session.scalar(select(Task).where(Task.user_id == user_id))
         user_tasks_list = await session.execute(select(Task).where(Task.user_id == user_id))
         tasks_list = user_tasks_list.scalars().all()
+        task_numbers_list = []
         if user_tasks == None:
             return 0
 
@@ -30,20 +31,19 @@ async def check_task_number(user_id):
             if task_number == None:
                 continue
 
-            task_numbers_list = []
             task_number = int(task.task_number)
             task_numbers_list.append(task_number)
-            last_task_number = max(task_numbers_list)
-            print(last_task_number)
+
+        last_task_number = max(task_numbers_list)
 
         return last_task_number
 
 
 async def show_user_tasks(user_id):
     async with async_session() as session:
+        user_tasks_test = await session.scalar(select(Task).where(Task.user_id == user_id))
         user_tasks = await session.execute(select(Task).where(Task.user_id == user_id))
-
-        if user_tasks == None:
+        if user_tasks_test is None:
             msg = "Вы не добавили ни одной задачи!"
             return msg
 
@@ -75,12 +75,11 @@ async def delete_task(user_id, task_number):
 async def update_task(user_id, task_number, updated_task):
     async with async_session() as session:
         user_task = await session.scalar(select(Task).where(Task.task_number == task_number).where(Task.user_id == user_id))
-
         if not user_task:
             msg = "У вас нет задачи с таким номером!"
             return msg
 
-        await session.scalar(update(Task).where(Task.task_number == task_number).where(Task.user_id == user_id), {"task": updated_task})
+        await session.execute(update(Task).where(Task.task_number == task_number).where(Task.user_id == user_id), {"task": updated_task})
         await session.commit()
         msg = "Ваша задача была изменена!"
         return msg

@@ -3,7 +3,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from bot.keyboards.user_keyboards import start_keyboard, menu_keyboard, add_task_keyboard, new_task_add_keyboard, delete_task_keyboard, delete_new_task_keyboard, update_task_keyboard
-from bot.DB.requests import add_task, check_task_number, delete_task, show_user_tasks
+from bot.DB.requests import add_task, check_task_number, delete_task, show_user_tasks, update_task
 
 router = Router()
 
@@ -106,3 +106,22 @@ async def confirm_add_task_handler(callback: types.CallbackQuery, state: FSMCont
 
     builder = await new_task_add_keyboard()
     await callback.message.edit_text("Твоя задача была добавлена!", reply_markup=builder.as_markup())
+
+
+@router.callback_query(lambda callback: callback.data == 'confirmUpdate')
+async def confirm_update_task_handler(callback: types.CallbackQuery, state: FSMContext):
+    builder = await add_task_keyboard()
+    data = await state.get_data()
+    user_text = data.get("text")
+    if (user_text is None or user_text == "" or len(user_text) < 3):
+        await callback.answer()
+        await callback.message.edit_text("Ты не написал задачу!", reply_markup=builder.as_markup())
+        return
+    task_number, updated_task = user_text.split(" ", 1)
+    task_number = int(task_number)
+    user_id = callback.from_user.id
+
+    msg = await update_task(user_id, task_number, updated_task)
+
+    builder = await new_task_add_keyboard()
+    await callback.message.edit_text(msg,  reply_markup=builder.as_markup())
