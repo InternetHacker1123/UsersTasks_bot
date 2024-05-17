@@ -32,6 +32,11 @@ async def start_keyboard():
     )
 
     builder.add(types.InlineKeyboardButton(
+        text=update_task_button_text,
+        callback_data=update_task_button_callback_data)
+    )
+
+    builder.add(types.InlineKeyboardButton(
         text=delete_task_button_text,
         callback_data=delete_task_button_callback_data)
     )
@@ -39,11 +44,6 @@ async def start_keyboard():
     builder.add(types.InlineKeyboardButton(
         text=show_tasks_button_text,
         callback_data=show_tasks_button_callback_data)
-    )
-
-    builder.add(types.InlineKeyboardButton(
-        text=update_task_button_text,
-        callback_data=update_task_button_callback_data)
     )
 
     builder.adjust(1)
