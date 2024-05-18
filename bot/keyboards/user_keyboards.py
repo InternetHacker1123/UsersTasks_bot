@@ -1,6 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram import types
 from bot.buttons.buttons import HELP_BUTTON, MENU_BUTTON, ADD_TASK_BUTTON, SHOW_TASKS_BUTTON, CONFIRM_TASK_BUTTON, DELETE_TASK_BUTTON, CONFIRM_DELETE_TASK_BUTTON, UPDATE_TASK_BUTTON, CONFIRM_UPDATE_TASK_BUTTON
+
+# клавиатура при вводе команды /start
 
 
 async def start_keyboard():
@@ -50,6 +56,8 @@ async def start_keyboard():
 
     return builder
 
+# клавиатура при нажатии на кнопку "Добавить задачу"
+
 
 async def add_task_keyboard():
     menu_button_text = MENU_BUTTON.get("text")
@@ -73,6 +81,8 @@ async def add_task_keyboard():
 
     return builder
 
+# клавиатура при нажатии на кнопку "Подтвердить", при добавлении задачи
+
 
 async def new_task_add_keyboard():
     menu_button_text = MENU_BUTTON.get("text")
@@ -95,6 +105,8 @@ async def new_task_add_keyboard():
     builder.adjust(1)
 
     return builder
+
+# клавиатура при нажатии на кнопку "Удалить задачу"
 
 
 async def delete_task_keyboard():
@@ -120,6 +132,8 @@ async def delete_task_keyboard():
 
     return builder
 
+# клавиатура при нажатии на кнопку "Изменить задачу"
+
 
 async def update_task_keyboard():
     menu_button_text = MENU_BUTTON.get("text")
@@ -144,6 +158,34 @@ async def update_task_keyboard():
 
     return builder
 
+# клавиатура при нажатии на кнопку "Подтвердить", при изменении задачи
+
+
+async def update_new_task_keyboard():
+    menu_button_text = MENU_BUTTON.get("text")
+    menu_button_callback_data = MENU_BUTTON.get("callback_data")
+    update_task_button_text = UPDATE_TASK_BUTTON.get("text")
+    update_task_button_callback_data = UPDATE_TASK_BUTTON.get(
+        "callback_data")
+
+    builder = InlineKeyboardBuilder()
+
+    builder.add(types.InlineKeyboardButton(
+        text=menu_button_text,
+        callback_data=menu_button_callback_data)
+    )
+
+    builder.add(types.InlineKeyboardButton(
+        text=update_task_button_text,
+        callback_data=update_task_button_callback_data)
+    )
+
+    builder.adjust(1)
+
+    return builder
+
+# клавиатура при нажатии на кнопку "Подтвердить", при удалении задачи
+
 
 async def delete_new_task_keyboard():
     menu_button_text = MENU_BUTTON.get("text")
@@ -167,6 +209,8 @@ async def delete_new_task_keyboard():
     builder.adjust(1)
 
     return builder
+
+# клавиатура при нажатии на кнопку "функции бота"
 
 
 async def menu_keyboard():

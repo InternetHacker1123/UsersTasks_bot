@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 from sqlalchemy import BigInteger, String, Integer
@@ -9,9 +13,13 @@ engine = create_async_engine(url=os.getenv("SQLALCHEMY_URL"))
 
 async_session = async_sessionmaker(engine)
 
+# базовый класс
+
 
 class Base(AsyncAttrs, DeclarativeBase):
     pass
+
+# модель таблицы tasks
 
 
 class Task(Base):
@@ -22,6 +30,7 @@ class Task(Base):
     task = mapped_column(String(300))
 
 
+# подключение к БД
 async def async_main():
     async with engine.begin() as connect:
         print("connect")
