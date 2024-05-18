@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 ### Необходимо создать файл с названием ".env" и добавить в него следующие строки:
 ```
-BOT_TOKEN = 6977856707:AAHGHL5rnESKuiUmKZTLDML5Ni7pdWmEXUY
+BOT_TOKEN = ТОКЕН ВАШЕГО ТГ БОТА
 
 
 POSTGRES_USER = пользователь postgres с правами суперюзера
